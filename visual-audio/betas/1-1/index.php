@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio-Visualizer beta</title>
+    <title>Visual-Audio-BETA</title>
     <link rel="stylesheet" href="https://cdn.jeval.cl/0/bootstrap/bootstrap-5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="style.css">
@@ -46,7 +46,7 @@
             margin-top: 20px;
             text-align: center;
         }
-        .color-selector, .smoothing-selector, .fftsize-selector, .visibility-selector, .speed-selector {
+        .color-selector, .smoothing-selector, .fftsize-selector, .visibility-selector {
             margin-top: 10px;
         }
         .audio-controls-container {
@@ -81,14 +81,6 @@
                 <label for="color-selector">Color de las barras:</label>
                 <input type="color" id="color-selector" value="#ff0000">
             </div>
-            <div class="speed-selector">
-                <label for="speed-slider">Velocidad:</label>
-                <input type="range" min="0.5" max="2" step="0.1" value="1" class="slider" id="speed-slider">
-            </div>
-            <div class="reverse-selector">
-                <label for="reverse-switch">Reproducir en reversa:</label>
-                <input type="checkbox" id="reverse-switch">
-            </div>
             <label for="audio-file">Seleccionar archivo de audio:</label>
             <input type="file" id="audio-file" accept="audio/*">
             <div class="image-selector">
@@ -118,7 +110,7 @@
                 minHeight: 25
             });
 
-           
+            
             $("#audio-file").change(function() {
                 const file = this.files[0];
                 if (file) {
@@ -128,7 +120,7 @@
                 }
             });
 
-           
+            
             $("#image-upload").change(function() {
                 const file = this.files[0];
                 if (file) {
@@ -155,7 +147,7 @@
                 audio.play();
             });
 
-            
+           
             $("#pause-button").click(function() {
                 const audio = document.getElementById('audio');
                 audio.pause();
@@ -170,8 +162,6 @@
             const colorSelector = document.getElementById('color-selector');
             const smoothingSlider = document.getElementById('smoothing-slider');
             const fftSizeSlider = document.getElementById('fftsize-slider');
-            const speedSlider = document.getElementById('speed-slider');
-            const reverseSwitch = document.getElementById('reverse-switch');
 
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const source = audioCtx.createMediaElementSource(audio);
@@ -211,7 +201,7 @@
                 
                 const visibility = visibilitySlider.value;
 
-                
+               
                 const color = colorSelector.value;
 
                 
@@ -223,7 +213,6 @@
                     
                     const y = canvas.height - barHeight / 2;
 
-                    
                     canvasCtx.globalAlpha = visibility;
 
                     canvasCtx.fillRect(x, y, barWidth, barHeight / 2);
@@ -243,22 +232,11 @@
                 });
             };
 
-            
             fftSizeSlider.addEventListener('input', function() {
                 fftSize = parseInt(fftSizeSlider.value);
                 analyser.fftSize = fftSize;
                 prevDataArray = new Uint8Array(bufferLength);
                 dataArray.fill(0);
-            });
-
-            
-            speedSlider.addEventListener('input', function() {
-                audio.playbackRate = parseFloat(speedSlider.value);
-            });
-
-            
-            reverseSwitch.addEventListener('change', function() {
-                audio.playbackRate = reverseSwitch.checked ? -Math.abs(audio.playbackRate) : Math.abs(audio.playbackRate);
             });
         };
     </script>
